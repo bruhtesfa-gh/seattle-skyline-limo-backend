@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import { verifyToken } from "./util/token";
 import { User } from "./config/db";
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 4040;
 
 const app = express();
 app.use(express.static(path.join(__dirname, "uploads")));
@@ -21,12 +21,13 @@ app.use(
     credentials: true,
     origin: [
       "https://seattle-skyline-limo.netlify.app",
+      "https://seattle-skyline-limo-admin.netlify.app",
       "https://limo-admin.onrender.com",
       "https://seattle-limo.onrender.com",
       "http://localhost:3000",
       "http://localhost:5173",
       "127.0.0.1:3000",
-      "https://seattle-limos.onrender.com" ,
+      "https://seattle-limos.onrender.com",
       "http://localhost",
       "127.0.0.1"
     ],
