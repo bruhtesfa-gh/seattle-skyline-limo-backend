@@ -57,7 +57,8 @@ router.post("/register", async function (req, res, next) {
       .send({
         data: {
           message: "succeeessfuly registered",
-          user
+          user,
+          token: token,
         },
       });
   } catch (err: any) {
@@ -69,6 +70,7 @@ router.post("/register", async function (req, res, next) {
   }
 });
 
+
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -79,12 +81,13 @@ router.post(
     return res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 7,
+        sameSite: "none",
       })
       .send({
         data: {
+          token: token,
           message: "succeeessfuly loggedIn",
         },
       });
@@ -94,8 +97,8 @@ router.post("/logout", async function (req, res) {
   return res
     .clearCookie("token", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     })
     .send({
       data: {

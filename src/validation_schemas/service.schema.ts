@@ -1,12 +1,12 @@
 import Joi from "joi";
-const BlogPostschema = Joi.object({
+const ServicePostschema = Joi.object({
   title: Joi.string().required(),
   img: Joi.string().required(),
   userId: Joi.string(),
   content: Joi.any().required(),
   // published: Joi.boolean().required(),
 });
-const BlogUpdateschema = Joi.object({
+const ServiceUpdateschema = Joi.object({
   title: Joi.string(),
   userId: Joi.string(),
   img: Joi.string(),
@@ -14,4 +14,4 @@ const BlogUpdateschema = Joi.object({
   // published: Joi.boolean(),
 });
 
-export { BlogPostschema, BlogUpdateschema };
+export { ServicePostschema, ServiceUpdateschema };

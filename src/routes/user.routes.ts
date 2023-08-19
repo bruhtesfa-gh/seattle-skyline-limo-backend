@@ -5,10 +5,11 @@ import upload from "../config/multer";
 import { rm } from "fs/promises";
 import path from "path";
 import {
-  userChangePasswordSchem,
+  userChangePasswordSchema,
   userUpdateschema,
 } from "../validation_schemas/user.schema";
 import { comparePassword, hashPassword } from "../util/password";
+import uploadImageToCloudinary from "../config/cloudinary";
 const router = Router();
 const uploads = upload.single("img");
 const userPropertiestWithPassword = {
@@ -34,7 +35,10 @@ router.patch("/update-profile", [
       }
       const body = req.body;
       if (req.file) {
-        body["img"] = req.file?.filename;
+        const publicId = await uploadImageToCloudinary(
+          path.join(__dirname, "../uploads/", req.file?.filename)
+        );
+        body["img"] = publicId;
       }
       const value = await userUpdateschema.validateAsync(body);
       const updatedUser = await User.update({

@@ -1,9 +1,9 @@
 import Joi from "joi";
 
 const userUpdateschema = Joi.object({
-  firstName: Joi.string().max(50),
-  lastName: Joi.string().max(50),
-  img: Joi.string().max(50),
+  firstName: Joi.string().max(500),
+  lastName: Joi.string().max(500),
+  img: Joi.string().max(500),
   email: Joi.string().email(),
 });
 const userChangePasswordSchema = Joi.object({
