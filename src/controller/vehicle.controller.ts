@@ -10,6 +10,7 @@ import { Vehicle } from "../config/db";
 import path from "path";
 import { catchAsync } from "../util/error";
 import CustomError from "../util/CustomeError";
+import uploadImageToCloudinary from "../config/cloudinary";
 
 const uploads = upload.single("img");
 export const postVehicle = [
@@ -21,10 +22,13 @@ export const postVehicle = [
         userId: req.user?.id,
         img: req.file?.filename,
       });
+      const publicId = await uploadImageToCloudinary(
+        path.join(__dirname, "../uploads/", req.file?.filename)
+      );
       const car = await Vehicle.create({
         data: {
           ...value,
-          img: req.file?.filename,
+          img: publicId,
         },
       });
       return res.send(car);
@@ -57,7 +61,7 @@ export const getVehicles = catchAsync(
 );
 export const getVehicle = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const carId = Number(req.params.id);
+    const carId = req.params.id;
     const car = await Vehicle.findUnique({
       where: {
         id: carId,
@@ -72,7 +76,7 @@ export const getVehicle = catchAsync(
 
 export const deleteVehicle = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const carId = Number(req.params.id);
+    const carId = req.params.id;
     const car = await Vehicle.findUnique({
       where: {
         id: carId,
@@ -94,7 +98,7 @@ export const updateVehicle = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const carId = Number(req.params.id);
+      const carId = req.params.id;
       const car = await Vehicle.findUnique({
         where: {
           id: carId,
@@ -105,7 +109,10 @@ export const updateVehicle = [
       }
       const body = req.body;
       if (req.file) {
-        body["img"] = req.file?.filename;
+        const publicId = await uploadImageToCloudinary(
+          path.join(__dirname, "../uploads/", req.file?.filename)
+        );
+        body["img"] = publicId;
       }
       const value = await VehicleUpdateschema.validateAsync(body);
       const updatedCar = await Vehicle.update({

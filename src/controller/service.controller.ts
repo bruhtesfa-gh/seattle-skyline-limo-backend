@@ -1,37 +1,37 @@
 //@ts-nocheck
 import { rm } from "fs/promises";
 import {
-  BlogPostschema,
-  BlogUpdateschema,
-} from "../validation_schemas/blog.schema";
+  ServicePostschema,
+  ServiceUpdateschema,
+} from "../validation_schemas/service.schema";
 import { NextFunction, Request, Response } from "express";
 import upload from "../config/multer";
-import { Blog } from "../config/db";
+import { Service } from "../config/db";
 import path from "path";
 import { catchAsync } from "../util/error";
 import CustomError from "../util/CustomeError";
 import uploadImageToCloudinary from "../config/cloudinary";
 
 const uploads = upload.single("img");
-export const postBlog = [
+export const postService = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const value = await BlogPostschema.validateAsync({
+      const value = await ServicePostschema.validateAsync({
         ...req.body,
         img: req.file?.filename,
       });
       const publicId = await uploadImageToCloudinary(
         path.join(__dirname, "../uploads/", req.file?.filename)
       );
-      const blog = await Blog.create({
+      const Service = await Service.create({
         data: {
           userId: req.user?.id,
           ...value,
           img: publicId,
         },
       });
-      return res.send(blog);
+      return res.send(Service);
     } catch (err) {
       if (req.file?.filename) {
         //if the validation fails, delete the uploaded file
@@ -41,12 +41,12 @@ export const postBlog = [
     }
   },
 ];
-export const getBlogs = catchAsync(
+export const getServices = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const page = Number(req.query?.page) || 1;
     const PAGE_SIZE = 6;
     const limit = Number(req.query?.limit) || PAGE_SIZE;
-    const results = await Blog.findMany({
+    const results = await Service.findMany({
       skip: (page - 1) * limit,
       take: limit,
       include: {
@@ -59,57 +59,57 @@ export const getBlogs = catchAsync(
     res.send(results);
   }
 );
-export const getBlog = catchAsync(
+export const getService = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = req.params.id;
-    const blog = await Blog.findUnique({
+    const serviceId = req.params.id;
+    const service = await Service.findUnique({
       include: {
         user: true,
       },
       where: {
-        id: blogId,
+        id: serviceId,
       },
     });
-    if (!blog) {
-      return next(new CustomError("blog not found", 404));
+    if (!service) {
+      return next(new CustomError("service not found", 404));
     }
-    res.send(blog);
+    res.send(Service);
   }
 );
 
-export const deleteBlog = catchAsync(
+export const deleteService = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = req.params.id;
-    const blog = await Blog.findUnique({
+    const serviceId = req.params.id;
+    const service = await Service.findUnique({
       where: {
-        id: blogId,
+        id: serviceId,
       },
     });
-    if (!blog) {
-      return next(new CustomError("blog not found", 404));
+    if (!service) {
+      return next(new CustomError("service not found", 404));
     }
-    await Blog.delete({
+    await Service.delete({
       //TODO delete file
       where: {
-        id: blogId,
+        id: serviceId,
       },
     });
-    res.send("Blog deleted");
+    res.send("service deleted");
   }
 );
 
-export const updateBlog = [
+export const updateService = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const blogId = req.params.id;
-      const blog = await Blog.findUnique({
+      const serviceId = req.params.id;
+      const service = await Service.findUnique({
         where: {
-          id: blogId,
+          id: serviceId,
         },
       });
-      if (!blog) {
-        return next(new CustomError("blog not found", 404));
+      if (!service) {
+        return next(new CustomError("service not found", 404));
       }
       const body = req.body;
       if (req.file) {
@@ -118,14 +118,14 @@ export const updateBlog = [
         );
         body["img"] = publicId;
       }
-      const value = await BlogUpdateschema.validateAsync(body);
-      const updatedBlog = await Blog.update({
+      const value = await ServiceUpdateschema.validateAsync(body);
+      const updatedService = await Service.update({
         where: {
-          id: blogId,
+          id: serviceId,
         },
         data: value,
       });
-      res.send(updatedBlog);
+      res.send(updatedService);
     } catch (err) {
       if (req.file?.filename) {
         //if the validation fails, delete the uploaded file

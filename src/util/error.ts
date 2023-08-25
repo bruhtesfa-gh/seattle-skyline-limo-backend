@@ -6,7 +6,6 @@ import {
 } from "jsonwebtoken";
 import { ValidationError } from "joi";
 import CustomError from "./CustomeError";
-import { MulterError } from "multer";
 export const catchAsync = (fn: Function) => {
   return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
@@ -57,5 +56,6 @@ export const globalErrorHandler = (
   if (err instanceof ValidationError) {
     return res.status(400).send(err.message);
   }
-  return res.status(500).send("Something went wrong");
+  // console.log();
+  return res.status(400).send(err.message);
 };

@@ -58,7 +58,7 @@ router.post("/register", async function (req, res, next) {
         data: {
           message: "succeeessfuly registered",
           user,
-          token: token,
+          token,
         },
       });
   } catch (err: any) {
@@ -87,7 +87,7 @@ router.post(
       })
       .send({
         data: {
-          token: token,
+          token,
           message: "succeeessfuly loggedIn",
         },
       });

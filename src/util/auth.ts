@@ -1,7 +1,6 @@
 import { User } from "../config/db";
 import { verifyToken } from "./token";
 import { Request, Response, NextFunction } from "express";
-
 import bcrypt from "bcrypt";
 
 export async function hashPassword(password: string) {
@@ -15,11 +14,11 @@ export const passwordCompare = async (password: string, hashedPassword: string) 
 };
 
 export async function isAuth(req: Request, res: Response, next: NextFunction) {
-  const decodedToken = await verifyToken(req.cookies.token);
+  const decodedToken = await verifyToken(req.cookies.token || req.headers.authorization?.split(" ")[1] || "");
 
   const user = await User.findUniqueOrThrow({
     where: {
-      id: Number(decodedToken.sub),
+      id: decodedToken.sub,
     },
     select: {
       email: true,

@@ -25,7 +25,7 @@ export const getComments = catchAsync(
         createdAt: "desc",
       },
       where: {
-        blogId: Number(req?.params?.blogId),
+        blogId: req?.params?.blogId,
       },
     });
     res.send(results);
@@ -33,7 +33,7 @@ export const getComments = catchAsync(
 );
 export const getComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const commentId = Number(req.params.id);
+    const commentId = req.params.id;
     const comment = await Comment.findUnique({
       where: {
         id: commentId,
@@ -47,7 +47,7 @@ export const getComment = catchAsync(
 );
 export const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const commentID = Number(req.params.id);
+    const commentID = req.params.id;
     const comment = await Comment.findUnique({
       where: {
         id: commentID,
