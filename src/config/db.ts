@@ -6,6 +6,7 @@ export const {
   book: Book,
   vehicle: Vehicle,
   comment: Comment,
+  service: Service,
 } = prisma;
 
 export default prisma;
