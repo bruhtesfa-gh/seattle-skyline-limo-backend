@@ -24,14 +24,14 @@ export const postService = [
       const publicId = await uploadImageToCloudinary(
         path.join(__dirname, "../uploads/", req.file?.filename)
       );
-      const Service = await Service.create({
+      const service = await Service.create({
         data: {
           userId: req.user?.id,
           ...value,
           img: publicId,
         },
       });
-      return res.send(Service);
+      return res.send(service);
     } catch (err) {
       if (req.file?.filename) {
         //if the validation fails, delete the uploaded file
