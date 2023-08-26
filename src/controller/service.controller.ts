@@ -73,7 +73,7 @@ export const getService = catchAsync(
     if (!service) {
       return next(new CustomError("service not found", 404));
     }
-    res.send(Service);
+    res.send(service);
   }
 );
 
