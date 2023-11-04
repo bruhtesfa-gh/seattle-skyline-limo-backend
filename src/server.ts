@@ -34,8 +34,8 @@ app.use(
     origin: [
       "http://localhost:3000",
       "127.0.0.1:3000",
-      "https://seattle-skyline-limo.netlify.app/",
-      "https://seattle-skyline-limo-admin.netlify.app/",
+      "https://seattle-skyline-limo.netlify.app",
+      "https://seattle-skyline-limo-admin.netlify.app",
       "http://localhost",
       "127.0.0.1"
     ],
