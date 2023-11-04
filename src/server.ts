@@ -28,7 +28,19 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:3000",
+      "127.0.0.1:3000",
+      "https://seattle-skyline-limo.netlify.app/",
+      "https://seattle-skyline-limo-admin.netlify.app/",
+      "http://localhost",
+      "127.0.0.1"
+    ],
+  })
+);
 app.use(cookieParser());
 app.use(passport.initialize({}));
 app.use(router);
