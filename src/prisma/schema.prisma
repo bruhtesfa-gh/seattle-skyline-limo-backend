@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file adapted for MySQL with @map("_id"),
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -6,32 +6,33 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
-model User{
- id String @id @default(auto()) @map("_id") @db.ObjectId
+
+model User {
+  id        Int       @id @default(autoincrement()) @map("_id")
   firstName String?
-  lastName String? 
-  img      String @default("")
-  email String @unique
-  password String 
-  blog Blog[]
-  vehicle Vehicle[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  lastName  String?
+  img       String    @default("")
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  blogs     Blog[] // Updated relation to 'blogs'
+  vehicles  Vehicle[] // Updated relation to 'vehicles'
 }
+
 model Blog {
- id String @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int       @id @default(autoincrement()) @map("_id")
   title     String
-  img      String
-  content   String @db.String
-  user    User    @relation(fields: [userId], references: [id])
-  userId  String   @db.ObjectId
-  // published Boolean @default(false)
-  blog   Comment[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  img       String
+  content   String
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  comments  Comment[] // Updated relation to 'comments'
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 enum VehicleType {
@@ -40,55 +41,59 @@ enum VehicleType {
   VAN
   SEDAN
 }
+
 enum ReservationStatus {
   PENDING
   COMPLETED
   REJECTED
 }
+
 model Vehicle {
- id String @id @default(auto()) @map("_id") @db.ObjectId
- name String
-  model String
-  img      String
-  description String @db.String
-  speed Float
-  automatic Int @default(1)
-  heatedSeat  Int @default(1)
-  gpsNavigation Int @default(1)
-  pricePerDay  Float
-  type VehicleType
+  id            Int         @id @default(autoincrement()) @map("_id")
+  name          String
+  model         String
+  img           String
+  description   String
+  speed         Float
+  automatic     Int         @default(1)
+  heatedSeat    Int         @default(1)
+  gpsNavigation Int         @default(1)
+  pricePerDay   Float
+  type          VehicleType
   passengerSize Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user    User    @relation(fields: [userId], references: [id]) 
-  userId  String  @db.ObjectId
-  books Book[]
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id])
+  books         Book[] // Updated relation to 'books'
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
+
 model Book {
- id String @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName String
-  fromAddress String
-  toAddress String
-  email String
-  phoneNumber String
+  id           Int               @id @default(autoincrement()) @map("_id")
+  firstName    String
+  lastName     String
+  fromAddress  String
+  toAddress    String
+  email        String
+  phoneNumber  String
   luggageCount Int
-  personCount Int
-  journeyDate DateTime
-  description String @db.String
-  status ReservationStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  vehicle    Vehicle    @relation(fields: [vehicleId], references: [id])
-  vehicleId  String  @db.ObjectId
+  personCount  Int
+  journeyDate  DateTime
+  description  String
+  status       ReservationStatus @default(PENDING)
+  vehicleId    Int
+  vehicle      Vehicle           @relation(fields: [vehicleId], references: [id])
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 }
-model Comment{
- id String @id @default(auto()) @map("_id") @db.ObjectId
-  fullName String
-  email String
-  comment String @db.String
-  blog    Blog    @relation(fields: [blogId], references: [id]) 
-  blogId  String  @db.ObjectId
-   createdAt DateTime @default(now())
+
+model Comment {
+  id        Int      @id @default(autoincrement()) @map("_id")
+  fullName  String
+  email     String
+  comment   String
+  blogId    Int
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
