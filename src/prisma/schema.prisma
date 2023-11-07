@@ -21,6 +21,8 @@ model User {
   updatedAt DateTime  @updatedAt
   blogs     Blog[] // Updated relation to 'blogs'
   vehicles  Vehicle[] // Updated relation to 'vehicles'
+
+  @@map(name: "user")
 }
 
 model Blog {
@@ -33,6 +35,8 @@ model Blog {
   comments  Comment[] // Updated relation to 'comments'
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@map(name: "blog")
 }
 
 enum VehicleType {
@@ -66,6 +70,8 @@ model Vehicle {
   books         Book[] // Updated relation to 'books'
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@map(name: "vehicle")
 }
 
 model Book {
@@ -85,6 +91,8 @@ model Book {
   vehicle      Vehicle           @relation(fields: [vehicleId], references: [id])
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
+
+  @@map(name: "book")
 }
 
 model Comment {
@@ -96,4 +104,6 @@ model Comment {
   blog      Blog     @relation(fields: [blogId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map(name: "comment")
 }
