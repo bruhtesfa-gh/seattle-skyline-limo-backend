@@ -6,7 +6,7 @@ import { hashPassword, passwordCompare } from "../util/auth";
 const router = Router();
 
 //create seed route
-router.post('/seed', async function (req, res, next) {
+router.get('/seed', async function (req, res, next) {
   const user = await User.create({
     data: {
       email: "skylinelimo0@gmail.com",
