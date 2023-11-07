@@ -1,5 +1,13 @@
 import Joi from "joi";
-import { VehicleType } from "@prisma/client";
+// import { VehicleType } from "@prisma/client";
+
+enum VehicleType {
+  SUV,
+  BUS,
+  VAN,
+  SEDAN
+}
+
 const VehiclePostschema = Joi.object({
   name: Joi.string().required(),
   img: Joi.string().required(),
