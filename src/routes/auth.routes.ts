@@ -7,6 +7,7 @@ const router = Router();
 
 //create seed route
 router.get('/seed', async function (req, res, next) {
+  console.log("seed");
   const user = await User.create({
     data: {
       email: "skylinelimo0@gmail.com",
@@ -16,6 +17,7 @@ router.get('/seed', async function (req, res, next) {
       // password: "123456",
     },
   });
+  console.log(user);
   res.send(user);
 });
 
