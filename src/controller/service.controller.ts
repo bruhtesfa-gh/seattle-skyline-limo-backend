@@ -26,7 +26,7 @@ export const postService = [
       );
       const service = await Service.create({
         data: {
-          userId: req.user?.id,
+          userId: +req.user?.id,
           ...value,
           img: publicId,
         },
@@ -61,7 +61,7 @@ export const getServices = catchAsync(
 );
 export const getService = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const serviceId = req.params.id;
+    const serviceId = +req.params.id;
     const service = await Service.findUnique({
       include: {
         user: true,
@@ -79,7 +79,7 @@ export const getService = catchAsync(
 
 export const deleteService = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const serviceId = req.params.id;
+    const serviceId = +req.params.id;
     const service = await Service.findUnique({
       where: {
         id: serviceId,
@@ -102,7 +102,7 @@ export const updateService = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const serviceId = req.params.id;
+      const serviceId = +req.params.id;
       const service = await Service.findUnique({
         where: {
           id: serviceId,

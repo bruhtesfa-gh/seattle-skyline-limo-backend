@@ -13,6 +13,7 @@ import CustomError from "../util/CustomeError";
 import uploadImageToCloudinary from "../config/cloudinary";
 
 const uploads = upload.single("img");
+
 export const postBlog = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +27,7 @@ export const postBlog = [
       );
       const blog = await Blog.create({
         data: {
-          userId: req.user?.id,
+          userId: +req.user?.id,
           ...value,
           img: publicId,
         },
@@ -61,7 +62,7 @@ export const getBlogs = catchAsync(
 );
 export const getBlog = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = req.params.id;
+    const blogId = +req.params.id;
     const blog = await Blog.findUnique({
       include: {
         user: true,
@@ -79,7 +80,7 @@ export const getBlog = catchAsync(
 
 export const deleteBlog = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = req.params.id;
+    const blogId = +req.params.id;
     const blog = await Blog.findUnique({
       where: {
         id: blogId,
@@ -102,7 +103,7 @@ export const updateBlog = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const blogId = req.params.id;
+      const blogId = +req.params.id;
       const blog = await Blog.findUnique({
         where: {
           id: blogId,

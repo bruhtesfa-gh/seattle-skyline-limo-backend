@@ -11,7 +11,7 @@ const BookPostschema = Joi.object({
   journeyDate: Joi.date().required(),
   description: Joi.string().required(),
   driverGender: Joi.string().required(),
-  vehicleId: Joi.string().required(),
+  vehicleId: Joi.number().required(),
 });
 
 const BookUpdateschema = Joi.object({
@@ -27,7 +27,7 @@ const BookUpdateschema = Joi.object({
   journeyDate: Joi.date(),
   driverGender: Joi.string(),
   description: Joi.string(),
-  vehicleId: Joi.string(),
+  vehicleId: Joi.number(),
 });
 
 export { BookPostschema, BookUpdateschema };

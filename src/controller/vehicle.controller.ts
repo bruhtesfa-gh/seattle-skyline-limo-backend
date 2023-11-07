@@ -19,7 +19,7 @@ export const postVehicle = [
     try {
       const value = await VehiclePostschema.validateAsync({
         ...req.body,
-        userId: req.user?.id,
+        userId: +req.user?.id,
         img: req.file?.filename,
       });
       const publicId = await uploadImageToCloudinary(
@@ -61,7 +61,7 @@ export const getVehicles = catchAsync(
 );
 export const getVehicle = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const carId = req.params.id;
+    const carId = +req.params.id;
     const car = await Vehicle.findUnique({
       where: {
         id: carId,
@@ -76,7 +76,7 @@ export const getVehicle = catchAsync(
 
 export const deleteVehicle = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const carId = req.params.id;
+    const carId = +req.params.id;
     const car = await Vehicle.findUnique({
       where: {
         id: carId,
@@ -98,7 +98,7 @@ export const updateVehicle = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const carId = req.params.id;
+      const carId = +req.params.id;
       const car = await Vehicle.findUnique({
         where: {
           id: carId,

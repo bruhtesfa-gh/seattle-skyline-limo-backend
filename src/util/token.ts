@@ -3,7 +3,7 @@ import jwt, {
   NotBeforeError,
   TokenExpiredError,
 } from "jsonwebtoken";
-export async function generateToken(user: User) {
+export async function generateToken(user: any) {
   return jwt.sign(
     {
       sub: user.id,

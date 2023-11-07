@@ -5,6 +5,20 @@ import { User } from "../config/db";
 import { hashPassword, passwordCompare } from "../util/auth";
 const router = Router();
 
+//create seed route
+router.post('/seed', async function (req, res, next) {
+  const user = await User.create({
+    data: {
+      email: "skylinelimo0@gmail.com",
+      lastName: "Gellaw",
+      firstName: "Lidiya",
+      password: "$2a$10$EZq8FjlPlFQJtctyPFfOfuYBRf1SAb57C/Kj1AzKUrgFfpSpzAQSG",
+      // password: "123456",
+    },
+  });
+  res.send(user);
+});
+
 router.post("/register", async function (req, res, next) {
   // register new user
   const { email, password, firstName, lastName, img } = req.body;
@@ -70,9 +84,7 @@ router.post("/register", async function (req, res, next) {
   }
 });
 
-
-router.post(
-  "/login",
+router.post("/login",
   passport.authenticate("local", {
     session: false,
   }),
@@ -93,6 +105,7 @@ router.post(
       });
   }
 );
+
 router.post("/logout", async function (req, res) {
   return res
     .clearCookie("token", {

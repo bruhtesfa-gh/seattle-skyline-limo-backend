@@ -5,7 +5,7 @@ const VehiclePostschema = Joi.object({
   img: Joi.string().required(),
   description: Joi.string().required(),
   passengerSize: Joi.number().required().min(0),
-  userId: Joi.string().required(),
+  userId: Joi.number().required(),
   pricePerDay: Joi.number().required().min(0),
   type: Joi.string()
     .required()
@@ -17,7 +17,7 @@ const VehicleUpdateschema = Joi.object({
   description: Joi.string(),
   passengerSize: Joi.number().min(0),
   pricePerDay: Joi.number().min(0),
-  userId: Joi.string(),
+  userId: Joi.number(),
   type: Joi.string().allow(...Object.values(VehicleType)),
 });
 
