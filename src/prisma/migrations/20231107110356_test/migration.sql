@@ -40,9 +40,9 @@ CREATE TABLE `Vehicle` (
     `pricePerDay` DOUBLE NOT NULL,
     `type` ENUM('SUV', 'BUS', 'VAN', 'SEDAN') NOT NULL,
     `passengerSize` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `userId` INTEGER NOT NULL,
 
     PRIMARY KEY (`_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -61,9 +61,9 @@ CREATE TABLE `Book` (
     `journeyDate` DATETIME(3) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `status` ENUM('PENDING', 'COMPLETED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+    `vehicleId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `vehicleId` INTEGER NOT NULL,
 
     PRIMARY KEY (`_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
