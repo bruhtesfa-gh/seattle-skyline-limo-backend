@@ -2,12 +2,11 @@ import express from "express";
 import path from "path";
 import router from "./routes/index.routes";
 import { globalErrorHandler } from "./util/error";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import cors from "cors";
 import passportLocal from "./config/passport-local";
 import cookieParser from "cookie-parser";
 import passport from "passport";
-import http from "http";
 const app = express();
 
 // Replace 'example.com' with your server's domain or IP address
@@ -34,6 +33,7 @@ const keepServerAlive = () => {
 
 
 app.use(express.static(path.join(__dirname, "uploads")));
+// app.set('trust proxy', true)
 app.use(express.json());
 app.use(
   cors({
@@ -51,11 +51,11 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize({}));
 app.use(router);
-app.use(rateLimit());
+// app.use(rateLimit());
 app.listen(4000, () => {
   console.log("Server started on port 4000");
   // Start pinging the server at the specified interval
-  // setInterval(keepServerAlive, interval);
+  setInterval(keepServerAlive, interval);
 });
 passportLocal(passport);
 
