@@ -55,7 +55,7 @@ app.use(rateLimit());
 app.listen(4000, () => {
   console.log("Server started on port 4000");
   // Start pinging the server at the specified interval
-  setInterval(keepServerAlive, interval);
+  // setInterval(keepServerAlive, interval);
 });
 passportLocal(passport);
 
