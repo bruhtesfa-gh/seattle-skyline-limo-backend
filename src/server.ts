@@ -12,7 +12,7 @@ const app = express();
 // Replace 'example.com' with your server's domain or IP address
 const serverUrl = 'http://seattle-skyline-limo-server.onrender.com/users';
 // Replace 300000 (5 minutes) with the desired interval in milliseconds
-const interval = 600000;
+const interval = 6000;
 
 /**
  * Keeps the server alive by sending a ping request to the server URL.
