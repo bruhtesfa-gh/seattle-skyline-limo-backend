@@ -11,7 +11,7 @@ import http from "http";
 const app = express();
 
 // Replace 'example.com' with your server's domain or IP address
-const serverUrl = 'seattle-skyline-limo-server.onrender.com/users';
+const serverUrl = 'https://seattle-skyline-limo-server.onrender.com/users';
 // Replace 300000 (5 minutes) with the desired interval in milliseconds
 const interval = 600000;
 
@@ -22,11 +22,13 @@ const interval = 600000;
  * @return {void} This function does not return a value.
  */
 const keepServerAlive = () => {
-  http.get(serverUrl, (res: any) => {
-    console.log(`Ping sent to ${serverUrl}`);
-  }).on('error', (err: any) => {
-    console.error(`Error pinging ${serverUrl}: ${err.message}`);
-  });
+  fetch(serverUrl).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Failed to ping server at ${serverUrl}`);
+    }
+  }).catch((error) => {
+    console.error(`Failed to ping server at ${serverUrl}:`, error);
+  })
 }
 
 
