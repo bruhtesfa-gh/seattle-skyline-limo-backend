@@ -25,7 +25,10 @@ const keepServerAlive = () => {
   axios.get(serverUrl).then((res) => {
     if (!res.data) {
       throw new Error(`Failed to ping server at ${serverUrl}`);
+    } else {
+      console.log(`Successfully pinged server at ${serverUrl}`);
     }
+
   }).catch((error) => {
     console.error(`Failed to ping server at ${serverUrl}:`, error);
   })
