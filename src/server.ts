@@ -11,7 +11,7 @@ import http from "http";
 const app = express();
 
 // Replace 'example.com' with your server's domain or IP address
-const serverUrl = 'https://seattle-skyline-limo-server.onrender.com/users';
+const serverUrl = 'seattle-skyline-limo-server.onrender.com/users';
 // Replace 300000 (5 minutes) with the desired interval in milliseconds
 const interval = 600000;
 
