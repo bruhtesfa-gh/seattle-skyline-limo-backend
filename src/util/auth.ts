@@ -2,6 +2,7 @@ import { User } from "../config/db";
 import { verifyToken } from "./token";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import { JwtPayload } from "jsonwebtoken";
 
 export async function hashPassword(password: string) {
   const salt = await bcrypt.genSalt(10);
@@ -14,11 +15,12 @@ export const passwordCompare = async (password: string, hashedPassword: string) 
 };
 
 export async function isAuth(req: Request, res: Response, next: NextFunction) {
-  const decodedToken = await verifyToken(req.cookies.token || req.headers.authorization?.split(" ")[1] || "");
 
+  const decodedToken = await verifyToken(req.cookies.token || req.headers.authorization?.split(" ")[1] || "") as any;
+  console.log(decodedToken);
   const user = await User.findUniqueOrThrow({
     where: {
-      id: decodedToken.sub,
+      id: +decodedToken.sub,
     },
     select: {
       email: true,

@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `_id` INTEGER NOT NULL AUTO_INCREMENT,
     `firstName` VARCHAR(191) NULL,
     `lastName` VARCHAR(191) NULL,
@@ -9,12 +9,12 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `user_email_key`(`email`),
     PRIMARY KEY (`_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Blog` (
+CREATE TABLE `blog` (
     `_id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
     `img` VARCHAR(191) NOT NULL,
@@ -27,13 +27,13 @@ CREATE TABLE `Blog` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Vehicle` (
+CREATE TABLE `vehicle` (
     `_id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `model` VARCHAR(191) NOT NULL,
+    `model` VARCHAR(191) NOT NULL DEFAULT '',
     `img` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
-    `speed` DOUBLE NOT NULL,
+    `speed` DOUBLE NOT NULL DEFAULT 1,
     `automatic` INTEGER NOT NULL DEFAULT 1,
     `heatedSeat` INTEGER NOT NULL DEFAULT 1,
     `gpsNavigation` INTEGER NOT NULL DEFAULT 1,
@@ -48,7 +48,7 @@ CREATE TABLE `Vehicle` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Book` (
+CREATE TABLE `book` (
     `_id` INTEGER NOT NULL AUTO_INCREMENT,
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `Book` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Comment` (
+CREATE TABLE `comment` (
     `_id` INTEGER NOT NULL AUTO_INCREMENT,
     `fullName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
@@ -81,14 +81,30 @@ CREATE TABLE `Comment` (
     PRIMARY KEY (`_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `Blog` ADD CONSTRAINT `Blog_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `service` (
+    `_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `img` VARCHAR(191) NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `blog` ADD CONSTRAINT `blog_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Book` ADD CONSTRAINT `Book_vehicleId_fkey` FOREIGN KEY (`vehicleId`) REFERENCES `Vehicle`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `vehicle` ADD CONSTRAINT `vehicle_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Comment` ADD CONSTRAINT `Comment_blogId_fkey` FOREIGN KEY (`blogId`) REFERENCES `Blog`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `book` ADD CONSTRAINT `book_vehicleId_fkey` FOREIGN KEY (`vehicleId`) REFERENCES `vehicle`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `comment` ADD CONSTRAINT `comment_blogId_fkey` FOREIGN KEY (`blogId`) REFERENCES `blog`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `service` ADD CONSTRAINT `service_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`_id`) ON DELETE RESTRICT ON UPDATE CASCADE;

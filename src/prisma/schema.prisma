@@ -21,6 +21,7 @@ model User {
   updatedAt DateTime  @updatedAt
   blogs     Blog[] // Updated relation to 'blogs'
   vehicles  Vehicle[] // Updated relation to 'vehicles'
+  service   Service[]
 
   @@map(name: "user")
 }
@@ -55,10 +56,10 @@ enum ReservationStatus {
 model Vehicle {
   id            Int         @id @default(autoincrement()) @map("_id")
   name          String
-  model         String
+  model         String      @default("")
   img           String
   description   String
-  speed         Float
+  speed         Float       @default(1)
   automatic     Int         @default(1)
   heatedSeat    Int         @default(1)
   gpsNavigation Int         @default(1)
@@ -106,4 +107,17 @@ model Comment {
   updatedAt DateTime @updatedAt
 
   @@map(name: "comment")
+}
+
+model Service {
+  id        Int      @id @default(autoincrement()) @map("_id")
+  title     String
+  img       String
+  content   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map(name: "service")
 }

@@ -11,6 +11,10 @@ import { Blog, Book, User, Vehicle } from "../config/db";
 import { isAuth } from "../util/auth";
 import { sendMail } from "../config/mail";
 
+router.get("/users", async (req: Request, res: Response, next: NextFunction) => {
+  const users = await User.findMany();
+  res.send(users);
+});
 router.use("/auth", authRouter);
 router.use("/blog", blogRouter);
 router.use("/book", bookRouter);

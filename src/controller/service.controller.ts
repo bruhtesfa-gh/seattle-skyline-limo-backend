@@ -76,7 +76,6 @@ export const getService = catchAsync(
     res.send(service);
   }
 );
-
 export const deleteService = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const serviceId = +req.params.id;
@@ -97,7 +96,6 @@ export const deleteService = catchAsync(
     res.send("service deleted");
   }
 );
-
 export const updateService = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {

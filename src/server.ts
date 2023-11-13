@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import path from "path";
 import router from "./routes/index.routes";
 import { globalErrorHandler } from "./util/error";
@@ -7,24 +7,29 @@ import cors from "cors";
 import passportLocal from "./config/passport-local";
 import cookieParser from "cookie-parser";
 import passport from "passport";
-
-//import { User } from "./config/db";
-
-
-// (async () => {
-//   await User.create({
-//     data: {
-//       email: "neba@gmail.com",
-//       lastName: "Daniel",
-//       firstName: "Nebiyu",
-//       password: "$2a$10$EZq8FjlPlFQJtctyPFfOfuYBRf1SAb57C/Kj1AzKUrgFfpSpzAQSG",
-//       // password: "123456",
-//     },
-//   });
-// })();
-
-
+import http from "http";
 const app = express();
+
+// Replace 'example.com' with your server's domain or IP address
+const serverUrl = 'https://seattle-skyline-limo-server.onrender.com/users';
+// Replace 300000 (5 minutes) with the desired interval in milliseconds
+const interval = 600000;
+
+/**
+ * Keeps the server alive by sending a ping request to the server URL.
+ *
+ * @param {string} serverUrl - The URL of the server.
+ * @return {void} This function does not return a value.
+ */
+const keepServerAlive = () => {
+  http.get(serverUrl, (res: any) => {
+    console.log(`Ping sent to ${serverUrl}`);
+  }).on('error', (err: any) => {
+    console.error(`Error pinging ${serverUrl}: ${err.message}`);
+  });
+}
+
+
 
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
@@ -47,6 +52,8 @@ app.use(router);
 app.use(rateLimit());
 app.listen(4000, () => {
   console.log("Server started on port 4000");
+  // Start pinging the server at the specified interval
+  setInterval(keepServerAlive, interval);
 });
 passportLocal(passport);
 
@@ -62,5 +69,5 @@ process.on("uncaughtException", (err: Error) => {
   console.log(err.name, err.message);
   console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
   process.exit(1);
- 
+
 });

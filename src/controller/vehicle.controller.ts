@@ -17,6 +17,7 @@ export const postVehicle = [
   uploads,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req);
       const value = await VehiclePostschema.validateAsync({
         ...req.body,
         userId: +req.user?.id,
@@ -29,7 +30,7 @@ export const postVehicle = [
         data: {
           ...value,
           img: publicId,
-        },
+        }
       });
       return res.send(car);
     } catch (err) {
