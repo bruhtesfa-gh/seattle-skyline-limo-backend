@@ -7,6 +7,7 @@ import cors from "cors";
 import passportLocal from "./config/passport-local";
 import cookieParser from "cookie-parser";
 import passport from "passport";
+import axios from "axios";
 const app = express();
 
 // Replace 'example.com' with your server's domain or IP address
@@ -21,8 +22,8 @@ const interval = 6000;
  * @return {void} This function does not return a value.
  */
 const keepServerAlive = () => {
-  fetch(serverUrl).then((response) => {
-    if (!response.ok) {
+  axios.get(serverUrl).then((res) => {
+    if (!res.data) {
       throw new Error(`Failed to ping server at ${serverUrl}`);
     }
   }).catch((error) => {
